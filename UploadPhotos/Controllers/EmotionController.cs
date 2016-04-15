@@ -15,8 +15,8 @@ namespace UploadPhotos.Controllers
         // GET: api/Emotion
         public async Task<HttpResponseMessage> Get()
         {
+            //Testing the emotion api from local url
             Stream filestream = new FileStream("C:/Users/Ilias/Dropbox/diploma/UploadPhotos_version1_webapi/UploadPhotos/App_Data/smile.jpg", FileMode.Open);
-
 
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://api.projectoxford.ai/emotion/v1.0/recognize");
@@ -27,14 +27,12 @@ namespace UploadPhotos.Controllers
 
             var response = await httpClient.PostAsync("https://api.projectoxford.ai/emotion/v1.0/recognize", content);
             var responseContent = await response.Content.ReadAsStringAsync();
-            ////sto responseContent tha exoume to apotelesma
+            //sto responseContent tha exoume to apotelesma
 
             return Request.CreateResponse(HttpStatusCode.OK, responseContent);
 
 
         }
-
-
 
 
     }

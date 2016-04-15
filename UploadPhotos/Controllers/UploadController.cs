@@ -70,8 +70,8 @@ namespace UploadApplication.Controllers
                             
 
 
-                        //sto responseContent tha exoume to apotelesma se Json
-                        return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
+                            //sto responseContent tha exoume to apotelesma se Json
+                            return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
                         
                         }
                         
