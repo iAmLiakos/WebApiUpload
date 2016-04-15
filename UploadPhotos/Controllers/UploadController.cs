@@ -34,7 +34,7 @@ namespace UploadApplication.Controllers
             CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
             
             List<string> files = new List<string>();
-
+            
             //list for accepted file types
             List<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png" };            
                       
@@ -68,8 +68,10 @@ namespace UploadApplication.Controllers
                             var response = await httpClient.PostAsync("https://api.projectoxford.ai/emotion/v1.0/recognize", content);
                             var responseContent = await response.Content.ReadAsStringAsync();
                             
-
-
+                            //Apothikeush tou apotelesmatos se txt arxeio
+                            TextWriter write = new StreamWriter("C:/Users/Ilias/Dropbox/diploma/UploadPhotos_version1_webapi/UploadPhotos/App_Data/result.txt");
+                            write.WriteLine(responseContent);
+                            write.Close();
                             //sto responseContent tha exoume to apotelesma se Json
                             return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
                         

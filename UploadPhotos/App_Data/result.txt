@@ -1,0 +1,1 @@
+[{"faceRectangle":{"height":99,"left":91,"top":58,"width":99},"scores":{"anger":0.9980867,"contempt":3.97123267E-06,"disgust":0.000465247344,"fear":2.23119023E-05,"happiness":2.79621961E-08,"neutral":0.000116096286,"sadness":8.543724E-07,"surprise":0.00130481343}}]
