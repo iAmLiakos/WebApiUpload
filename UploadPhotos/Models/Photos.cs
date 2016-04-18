@@ -5,11 +5,30 @@ using System.Web;
 
 namespace UploadPhotos.Models
 {
-    public class Photos
+    public class Emotion
     {
-        public string PhotoName { get; set; }
-        public DateTime DateCreated { get; set; }       
-        public int PhotoDimensions { get; set; }
-
+        public Facerectangle faceRectangle { get; set; }
+        public Scores scores { get; set; }
     }
+
+    public class Facerectangle
+    {
+        public int height { get; set; }
+        public int left { get; set; }
+        public int top { get; set; }
+        public int width { get; set; }
+    }
+
+    public class Scores
+    {
+        public float anger { get; set; }
+        public float contempt { get; set; }
+        public float disgust { get; set; }
+        public float fear { get; set; }
+        public float happiness { get; set; }
+        public float neutral { get; set; }
+        public float sadness { get; set; }
+        public float surprise { get; set; }
+    }
+
 }

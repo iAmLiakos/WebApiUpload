@@ -66,8 +66,8 @@ namespace UploadApplication.Controllers
                         content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/octet-stream");
                         //xtizw to response
                         var response = await httpClient.PostAsync("https://api.projectoxford.ai/emotion/v1.0/recognize", content);
-                        var responseContent = await response.Content.ReadAsStringAsync();
-
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        
 
                         //Apothikeush tou apotelesmatos se txt arxeio
                         TextWriter write = new StreamWriter("C:/Users/Ilias/Dropbox/diploma/UploadPhotos_version1_webapi/UploadPhotos/App_Data/result.txt");
@@ -110,5 +110,8 @@ namespace UploadApplication.Controllers
             return headers.ContentDisposition.FileName.Replace("\"", string.Empty);
         }
     }
+
+
+
 
 }
