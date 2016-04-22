@@ -17,8 +17,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Mvc;
+using UploadPhotos.Models;
 
 
 
@@ -86,6 +88,7 @@ namespace UploadApplication.Controllers
                         IRestResponse response = client.Execute(request);
                         var responseContent = response.Content; // raw content as string
                         
+                        
                         /*Old Request and Response
                         var httpClient = new HttpClient();
                         httpClient.BaseAddress = new Uri("https://api.projectoxford.ai/emotion/v1.0/recognize");
@@ -101,8 +104,25 @@ namespace UploadApplication.Controllers
                         //Apothikeush tou apotelesmatos se txt arxeio
                         TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
                         write.WriteLine(responseContent);                        
-                        write.Close();                        
-                        
+                        write.Close();
+
+                        /*
+                        //playing with json - good output
+                        StreamReader sr = new StreamReader("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
+                        //StreamReader sr = new StreamReader(responseContent);
+                        JsonTextReader jtr = new JsonTextReader(sr);
+                        var serializer = new JsonSerializer();
+                        //var jsonObject = serializer.Deserialize(jtr);
+                        //Emotion newPhoto = (Emotion)serializer.Deserialize(jtr);
+                        */
+                        /*
+                        //dhmiourgia object apo json
+                        StreamReader re = new StreamReader("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
+                        JsonTextReader reader = new JsonTextReader(re);
+                        JsonSerializer js = new JsonSerializer();                                         
+                        Emotion newPhoto = (Emotion)js.Deserialize(reader);
+                        */
+
                         //sto responseContent tha exoume to apotelesma se Json
                         return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
 

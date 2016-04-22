@@ -1,7 +1,10 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
+
 
 namespace UploadPhotos.Models
 {
@@ -30,5 +33,4 @@ namespace UploadPhotos.Models
         public float sadness { get; set; }
         public float surprise { get; set; }
     }
-
 }
