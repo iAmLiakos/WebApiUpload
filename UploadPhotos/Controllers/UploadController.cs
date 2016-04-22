@@ -59,7 +59,8 @@ namespace UploadApplication.Controllers
 
                         files.Add(Path.GetFileName(file.LocalFileName));
 
-                        //Do stuff with my photos
+                        //DO STUFF WITH PHOTOS/EMOTIONS
+
                         //HTTP REQUEST to the Emotion API                    
                         //Stream filestream = new FileStream(file.LocalFileName, FileMode.Open);
                                                 
@@ -100,9 +101,7 @@ namespace UploadApplication.Controllers
                         //Apothikeush tou apotelesmatos se txt arxeio
                         TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
                         write.WriteLine(responseContent);                        
-                        write.Close();
-
-                        
+                        write.Close();                        
                         
                         //sto responseContent tha exoume to apotelesma se Json
                         return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
@@ -121,8 +120,6 @@ namespace UploadApplication.Controllers
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
             }
-
-
 
         }
 
