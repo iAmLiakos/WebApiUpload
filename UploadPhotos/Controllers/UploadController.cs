@@ -1,15 +1,20 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -52,12 +57,35 @@ namespace UploadApplication.Controllers
                     if (AllowedFileExtensions.Contains(extension))
                     {
 
-                        //files.Add(Path.GetFileName(file.LocalFileName));
+                        files.Add(Path.GetFileName(file.LocalFileName));
 
                         //Do stuff with my photos
-                        //HTTP REQUEST to the Emotion API
-                        Stream filestream = new FileStream(file.LocalFileName, FileMode.Open);
+                        //HTTP REQUEST to the Emotion API                    
+                        //Stream filestream = new FileStream(file.LocalFileName, FileMode.Open);
+                                                
                         //xtizw to swma tou request
+
+                        //Using RestSharp
+                        var client = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");                        
+                        var request = new RestRequest(Method.POST);
+                        request.RequestFormat = DataFormat.Json;
+                        request.AddHeader("Ocp-Apim-Subscription-Key", "02514d4f80b743718df7675700e46d95");
+                        //request.AddParameter("content-type", "application/octet-stream");
+                        //request.AddParameter("Host", "api.projectoxford.ai");
+                        Byte[] imageBytes;                        
+                        //Debugging
+                        //File.Open(@"C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/smile.jpg", FileMode.Open)
+                        using (FileStream fs = new FileStream(file.LocalFileName, FileMode.Open))
+                        {
+                            imageBytes = new BinaryReader(fs).ReadBytes((int)fs.Length);
+                        }
+                        request.AddParameter("application/octet-stream", imageBytes, ParameterType.RequestBody);
+                                                                      
+                        // execute the request
+                        IRestResponse response = client.Execute(request);
+                        var responseContent = response.Content; // raw content as string
+                        
+                        /*Old Request and Response
                         var httpClient = new HttpClient();
                         httpClient.BaseAddress = new Uri("https://api.projectoxford.ai/emotion/v1.0/recognize");
                         httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "02514d4f80b743718df7675700e46d95");
@@ -67,12 +95,15 @@ namespace UploadApplication.Controllers
                         //xtizw to response
                         var response = await httpClient.PostAsync("https://api.projectoxford.ai/emotion/v1.0/recognize", content);
                         string responseContent = await response.Content.ReadAsStringAsync();
-                        
+                        */
 
                         //Apothikeush tou apotelesmatos se txt arxeio
-                        TextWriter write = new StreamWriter("C:/Users/Ilias/Dropbox/diploma/UploadPhotos_version1_webapi/UploadPhotos/App_Data/result.txt");
-                        write.WriteLine(responseContent);
+                        TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
+                        write.WriteLine(responseContent);                        
                         write.Close();
+
+                        
+                        
                         //sto responseContent tha exoume to apotelesma se Json
                         return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
 
