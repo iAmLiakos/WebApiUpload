@@ -101,10 +101,10 @@ namespace UploadApplication.Controllers
                         string responseContent = await response.Content.ReadAsStringAsync();
                         */
 
-                        //Apothikeush tou apotelesmatos se txt arxeio
-                        TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
-                        write.WriteLine(responseContent);                        
-                        write.Close();
+                        //Apothikeush tou apotelesmatos se txt arxeio gia debugging
+                        //TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
+                        //write.WriteLine(responseContent);                        
+                        //write.Close();
 
                         /*
                         //playing with json - good output
