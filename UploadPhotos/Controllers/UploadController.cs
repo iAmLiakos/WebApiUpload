@@ -87,14 +87,27 @@ namespace UploadApplication.Controllers
                         // execute the request prosthiki
                         IRestResponse response = client.Execute(request);
                         var responseContent = response.Content; // raw content as string
+                        var responseStr = responseContent.Replace(@"\", string.Empty).Trim(new char[] { '\"' });
+                        //Deserialize
+                        var emotionObject = JsonConvert.DeserializeObject<List<Emotion>>(responseStr);
+                        var scoresObject = emotionObject[0].scores;
+                        Debug.WriteLine(emotionObject[0].scores);
+                       
+                        //MemoryStream mstream = new MemoryStream();
+                        //var stringBytes = System.Text.Encoding.UTF8.GetBytes(responseContent);
+                        //mstream.Write(stringBytes, 0, stringBytes.Length);
+                        //mstream.Seek(0, SeekOrigin.Begin);
 
+                        //string hello = response.Content;
+                        //hello = Newtonsoft.Json.Linq.JToken.Parse(hello).ToString();
                         //prostiki testing
                         //var client2 = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");
                         //var response2 = client2.ExecuteAsync<Emotion>(request, response =>
                         //{                            
                         //}
                         //);
-                        
+                        //Object
+
 
                         /*Old Request and Response
                         var httpClient = new HttpClient();
@@ -131,7 +144,8 @@ namespace UploadApplication.Controllers
                         */
 
                         //sto responseContent tha exoume to apotelesma se Json
-                        return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
+                        //return Request.CreateResponse(HttpStatusCode.Accepted, responseContent);
+                        return Request.CreateResponse(HttpStatusCode.OK, responseContent);
 
                     }
 

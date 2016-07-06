@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Owin;
 using Owin;
+using System.Data.Entity;
 
 [assembly: OwinStartup(typeof(UploadPhotos.Startup))]
 
@@ -12,7 +13,11 @@ namespace UploadPhotos
     {
         public void Configuration(IAppBuilder app)
         {
+            var db = new Models.PhotoContext();
             ConfigureAuth(app);
         }
+
+       
     }
+
 }
