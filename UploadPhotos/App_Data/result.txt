@@ -1,1 +1,1 @@
-[{"faceRectangle":{"height":99,"left":91,"top":58,"width":99},"scores":{"anger":0.9980867,"contempt":3.97123267E-06,"disgust":0.000465247344,"fear":2.23119023E-05,"happiness":2.79621961E-08,"neutral":0.000116096286,"sadness":8.543724E-07,"surprise":0.00130481343}}]
+[{"faceRectangle":{"height":129,"left":172,"top":79,"width":129},"scores":{"anger":5.202531E-11,"contempt":1.26062431E-12,"disgust":4.503328E-10,"fear":1.00676867E-12,"happiness":1.0,"neutral":1.4218976E-10,"sadness":8.760955E-12,"surprise":2.506108E-09}}]

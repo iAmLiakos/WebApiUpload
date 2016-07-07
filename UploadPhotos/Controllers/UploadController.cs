@@ -59,7 +59,7 @@ namespace UploadApplication.Controllers
                     if (AllowedFileExtensions.Contains(extension))
                     {
 
-                        //files.Add(Path.GetFileName(file.LocalFileName));
+                        files.Add(Path.GetFileName(file.LocalFileName));
 
                         //DO STUFF WITH PHOTOS/EMOTIONS
 
@@ -84,18 +84,11 @@ namespace UploadApplication.Controllers
                         }
                         request.AddParameter("application/octet-stream", imageBytes, ParameterType.RequestBody);
                                                                       
-                        // execute the request prosthiki
+                        // execute the request
                         IRestResponse response = client.Execute(request);
                         var responseContent = response.Content; // raw content as string
-
-                        //prostiki testing
-                        //var client2 = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");
-                        //var response2 = client2.ExecuteAsync<Emotion>(request, response =>
-                        //{                            
-                        //}
-                        //);
                         
-
+                        
                         /*Old Request and Response
                         var httpClient = new HttpClient();
                         httpClient.BaseAddress = new Uri("https://api.projectoxford.ai/emotion/v1.0/recognize");
