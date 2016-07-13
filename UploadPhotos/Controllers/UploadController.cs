@@ -1,25 +1,15 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Http;
-using System.Web.Mvc;
 using UploadPhotos.Models;
 
 
@@ -91,35 +81,20 @@ namespace UploadApplication.Controllers
                         //Deserialize
                         var emotionObject = JsonConvert.DeserializeObject<List<Emotion>>(responseStr);
                         var scoresObject = emotionObject[0].scores;
-                        Debug.WriteLine(emotionObject[0].scores);
-                       
-                        //MemoryStream mstream = new MemoryStream();
-                        //var stringBytes = System.Text.Encoding.UTF8.GetBytes(responseContent);
-                        //mstream.Write(stringBytes, 0, stringBytes.Length);
-                        //mstream.Seek(0, SeekOrigin.Begin);
+                        //Debug.WriteLine(emotionObject[0].scores);
 
-                        //string hello = response.Content;
-                        //hello = Newtonsoft.Json.Linq.JToken.Parse(hello).ToString();
-                        //prostiki testing
-                        //var client2 = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");
-                        //var response2 = client2.ExecuteAsync<Emotion>(request, response =>
-                        //{                            
-                        //}
-                        //);
-                        //Object
+                        //Adding results to my database - entityframework
+                        using (var context = new PhotoContext())
+                        {
+                            foreach (var eobject in emotionObject)
+                            {
+                                context.Photos.Add(eobject);
+                                context.SaveChanges();
+                                
+                            }
 
+                        }
 
-                        /*Old Request and Response
-                        var httpClient = new HttpClient();
-                        httpClient.BaseAddress = new Uri("https://api.projectoxford.ai/emotion/v1.0/recognize");
-                        httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "02514d4f80b743718df7675700e46d95");
-                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
-                        HttpContent content = new StreamContent(filestream);
-                        content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/octet-stream");
-                        //xtizw to response
-                        var response = await httpClient.PostAsync("https://api.projectoxford.ai/emotion/v1.0/recognize", content);
-                        string responseContent = await response.Content.ReadAsStringAsync();
-                        */
 
                         //Apothikeush tou apotelesmatos se txt arxeio
                         TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");

@@ -14,12 +14,16 @@ namespace UploadPhotos.Models
     {
         [Key]
         public int EmotionId { get; set; }
-        public Facerectangle faceRectangle { get; set; }       
+        [Required]
+        public Facerectangle faceRectangle { get; set; }    
+        [Required]   
         public Scores scores { get; set; }
     }
 
     public class Facerectangle
     {
+
+        //public int faceid { get; set; }
         [Key]
         public int height { get; set; }
         public int left { get; set; }
@@ -29,6 +33,8 @@ namespace UploadPhotos.Models
 
     public class Scores
     {
+        
+        //public int scoreid { get; set; }
         [Key]
         public float anger { get; set; }
         public float contempt { get; set; }
