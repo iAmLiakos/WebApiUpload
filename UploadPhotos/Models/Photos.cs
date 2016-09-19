@@ -22,9 +22,8 @@ namespace UploadPhotos.Models
 
     public class Facerectangle
     {
-
-        //public int faceid { get; set; }
         [Key]
+        public int faceid { get; set; }
         public int height { get; set; }
         public int left { get; set; }
         public int top { get; set; }
@@ -46,10 +45,5 @@ namespace UploadPhotos.Models
         public float surprise { get; set; }
     }
 
-    public class PhotoContext : DbContext
-    {
-        public DbSet<Emotion> Photos { get; set; }
-        public DbSet<Facerectangle> FaceLocation { get; set; }
-        public DbSet<Scores> Scores { get; set; }
-    }
+
 }

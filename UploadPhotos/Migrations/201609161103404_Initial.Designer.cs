@@ -13,7 +13,7 @@ namespace UploadPhotos.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201607061038041_Initial"; }
+            get { return "201609161103404_Initial"; }
         }
         
         string IMigrationMetadata.Source

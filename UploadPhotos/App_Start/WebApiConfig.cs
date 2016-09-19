@@ -5,6 +5,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.OData.Builder;
+using System.Web.Http.OData.Extensions;
+using UploadPhotos.Models;
+using UploadPhotos.Controllers;
 
 namespace UploadPhotos
 {
@@ -25,6 +29,14 @@ namespace UploadPhotos
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //setting up odata model 
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Emotion>("MyOdata");
+            builder.EntitySet<Facerectangle>("Facerectangles");
+            builder.EntitySet<Scores>("Scores");
+            config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+                  
         }
     }
 }

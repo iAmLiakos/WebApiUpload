@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,16 +18,58 @@ using UploadPhotos.Models;
 
 namespace UploadApplication.Controllers
 {
+    
     public class UploadController : ApiController
     {
+        //[AllowAnonymous]
+        [Authorize]
         public async Task<HttpResponseMessage> Post()
         {
 
             if (!Request.Content.IsMimeMultipartContent())
             {
+                //if (Request.Content.ReadAsStringAsync().Result.StartsWith("Username:"))
+                //{
+                    //var request = await Request.Content.ReadAsStringAsync();
+                    //ReadAsStringAsync();
+                    //var reque = JsonConvert.SerializeObject(request);
+                    //var jsoncredentials = JsonConvert.SerializeObject(request);
+                    //allagh "\"Username:foo@foo.grLocation:Ioannina\""
+
+                    //Location newloc = JsonConvert.DeserializeObject<Location>(reque);
+
+                    //add username and location names to put into dbcontext
+                    //var username = jsoncredentials.
+
+                    //using (var context = new MyPhotoModel())
+                    //{
+
+                    //    context.Locations.Add(newloc);
+                    //    context.SaveChanges();
+
+                    //}
+                //}
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
+            var user = User.Identity.Name;
+            var db = new MyPhotoModel();
+            AspNetUser userLog = new AspNetUser();
+            //AspNetUser sdsd = await db.AspNetUsers.FindAsync();
+            var userid = db.AspNetUsers.Where(b => b.Email == user).FirstOrDefault();
+            AspNetUser userrequested = db.AspNetUsers.Where(b => b.Email == user).FirstOrDefault();
+
+            //IEnumerable<string> location = Request.Headers.GetValues("Location");
+            //var locationstring = location.ToString();
+
+            IEnumerable < string > headerValues;
+            var location = string.Empty;
+            var keyFound = Request.Headers.TryGetValues("Location", out headerValues);
+            if (keyFound)
+            {
+                location = headerValues.FirstOrDefault();
+            }
+            Location loc = new Location(location);
             // load data to save           
             string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
             CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
@@ -80,17 +124,27 @@ namespace UploadApplication.Controllers
                         var responseStr = responseContent.Replace(@"\", string.Empty).Trim(new char[] { '\"' });
                         //Deserialize
                         var emotionObject = JsonConvert.DeserializeObject<List<Emotion>>(responseStr);
-                        var scoresObject = emotionObject[0].scores;
+
+                        //var scoresObject = emotionObject[0].scores;
                         //Debug.WriteLine(emotionObject[0].scores);
 
                         //Adding results to my database - entityframework
-                        using (var context = new PhotoContext())
+                        //using (var context = new MyPhotoModel())
+                        using (db)
                         {
                             foreach (var eobject in emotionObject)
                             {
-                                context.Photos.Add(eobject);
-                                context.SaveChanges();
+                                //eobject.locationID = "sd";
+                                db.Locations.Attach(loc);
+                                db.Emotions.Attach(eobject);
+                                db.AspNetUsers.Attach(userrequested);
                                 
+                                db.SaveChanges();
+                                //context.Locations.Add(loc);
+                                //context.Emotions.Add(eobject);
+                                //context.AspNetUsers.Add(userrequested);
+                                //context.SaveChanges();
+
                             }
 
                         }

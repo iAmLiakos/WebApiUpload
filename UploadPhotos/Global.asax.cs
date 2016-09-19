@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -18,6 +19,7 @@ namespace UploadPhotos
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Database.SetInitializer<UploadPhotos.Models.MyPhotoModel>(new CreateDatabaseIfNotExists<UploadPhotos.Models.MyPhotoModel>());
         }
     }
 }

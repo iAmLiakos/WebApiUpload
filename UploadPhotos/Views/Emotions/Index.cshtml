@@ -1,0 +1,89 @@
+﻿@model IEnumerable<UploadPhotos.Models.Emotion>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    @*<tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Facerectangle.faceID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Scores.scoreID)
+        </th>
+        <th></th>
+    </tr>*@
+    
+
+@foreach (var item in Model) {
+
+    int emotionscount = item.ScoreID.Value;
+    string angerdouble = item.Scores.anger.ToString();
+
+    decimal contemptdouble = (decimal)item.Scores.contempt; 
+    double disgustdouble = (double)item.Scores.disgust;
+    double feardouble = (double)item.Scores.fear;
+    double happinessdouble = (double)item.Scores.happiness;
+    double neutraldouble = (double)item.Scores.neutral;
+    double surprisedouble = (double)item.Scores.surprise;
+    <tr>
+        <td>
+            <p>@emotionscount</p>
+        </td>
+        <td>
+            <p>Anger is : @angerdouble</p>
+            @*@Html.DisplayFor(modelItem => item.Facerectangle.faceID)*@
+            @*@item.Facerectangle.height
+            @item.Facerectangle.left
+            @item.Facerectangle.top
+            @item.Facerectangle.width*@
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Scores.scoreID)*@
+            
+            @item.Scores.anger
+            @item.Scores.contempt
+            @item.Scores.disgust
+            @item.Scores.fear
+            @item.Scores.happiness
+            @item.Scores.neutral
+            @item.Scores.sadness
+            @item.Scores.surprise
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.EmotionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.EmotionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.EmotionID })
+        </td>
+    </tr>
+}
+
+</table>
+<div>
+    @using (var context = new UploadPhotos.Models.PhotoModel())
+    {
+        var scoreee = context.Scores.Find(10).anger;
+        <p>Scores are: @scoreee</p>
+    }
+    
+
+</div>
+@*<div>
+    
+    
+    @{
+        var data = Model.ToList();
+        var myChart = new Chart(width: 600, height: 400)
+        .AddTitle("Scores")
+        .DataBindTable(dataSource: data, xField: "score")
+        .Write();
+    }
+    
+
+</div>*@

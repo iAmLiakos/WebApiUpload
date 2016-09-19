@@ -1,0 +1,61 @@
+﻿@model UploadPhotos.Models.Emotion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Emotion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Facerectangle.faceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Facerectangle.faceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Scores.scoreID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Scores.scoreID)
+        </dd>
+        
+    </dl>
+</div>
+<div>
+    <h5>Details of chosen entry</h5>
+
+    <table>
+        <tr>
+            <th>anger</th>
+            <th>contempt</th>
+            <th>disgust</th>
+            <th>fear</th>
+            <th>happiness</th>
+            <th>neutral</th>
+            <th>sadness</th>
+            <th>surprise</th>
+        </tr>
+        <tr>  
+            <td>@Model.Scores.anger</td>
+            <td>@Model.Scores.contempt</td>
+            <td>@Model.Scores.disgust</td>
+            <td>@Model.Scores.fear</td>
+            <td>@Model.Scores.happiness</td>
+            <td>@Model.Scores.neutral</td>
+            <td>@Model.Scores.sadness</td>
+            <td>@Model.Scores.surprise</td>
+        </tr>
+
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EmotionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
