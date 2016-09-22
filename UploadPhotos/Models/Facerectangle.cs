@@ -12,7 +12,7 @@ namespace UploadPhotos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Facerectangle()
         {
-            Emotion = new HashSet<Emotion>();
+            Emotions = new HashSet<Emotion>();
         }
 
         public int Id { get; set; }
@@ -26,6 +26,6 @@ namespace UploadPhotos.Models
         public int? width { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Emotion> Emotion { get; set; }
+        public virtual ICollection<Emotion> Emotions { get; set; }
     }
 }

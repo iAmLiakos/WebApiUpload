@@ -11,9 +11,9 @@ namespace UploadPhotos.Models
     {
         public int Id { get; set; }
 
-        public int? FaceId { get; set; }
+        public int FaceId { get; set; }
 
-        public int? ScoreId { get; set; }
+        public int ScoreId { get; set; }
 
         public int LocationId { get; set; }
 
@@ -21,6 +21,6 @@ namespace UploadPhotos.Models
 
         public virtual Location Location { get; set; }
 
-        public virtual Scores Scores { get; set; }
+        public virtual Score Scores { get; set; }
     }
 }

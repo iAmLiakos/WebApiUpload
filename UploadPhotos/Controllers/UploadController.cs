@@ -54,7 +54,7 @@ namespace UploadApplication.Controllers
 
             var user = User.Identity.Name;
             var db = new MyPhotoModel();
-            AspNetUser userLog = new AspNetUser();
+            //AspNetUser userLog = new AspNetUser();
             //AspNetUser sdsd = await db.AspNetUsers.FindAsync();
             var userid = db.AspNetUsers.Where(b => b.Email == user).FirstOrDefault();
             AspNetUser userrequested = db.AspNetUsers.Where(b => b.Email == user).FirstOrDefault();
@@ -70,6 +70,9 @@ namespace UploadApplication.Controllers
                 location = headerValues.FirstOrDefault();
             }
             Location loc = new Location(location);
+            //loc.AspNetUser = userrequested;
+            loc.AspNetUsersId = userrequested.Id;
+            loc.Name = location;
             // load data to save           
             string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
             CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
@@ -124,7 +127,7 @@ namespace UploadApplication.Controllers
                         var responseStr = responseContent.Replace(@"\", string.Empty).Trim(new char[] { '\"' });
                         //Deserialize
                         var emotionObject = JsonConvert.DeserializeObject<List<Emotion>>(responseStr);
-
+                        
                         //var scoresObject = emotionObject[0].scores;
                         //Debug.WriteLine(emotionObject[0].scores);
 
@@ -134,11 +137,14 @@ namespace UploadApplication.Controllers
                         {
                             foreach (var eobject in emotionObject)
                             {
-                                //eobject.locationID = "sd";
-                                db.Locations.Attach(loc);
-                                db.Emotions.Attach(eobject);
-                                db.AspNetUsers.Attach(userrequested);
-                                
+                                //eobject.LocationId = loc.Id;
+                                //eobject.FaceId = eobject.Facerectangle.Id;
+                                //eobject.ScoreId = eobject.Scores.Id;
+                                eobject.Location = loc;  
+                                //db.Locations.Add(loc);
+                                db.Emotions.Add(eobject);
+                                //db.AspNetUsers.Add(userrequested);
+                                db.ChangeTracker.DetectChanges();
                                 db.SaveChanges();
                                 //context.Locations.Add(loc);
                                 //context.Emotions.Add(eobject);

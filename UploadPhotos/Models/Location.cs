@@ -14,7 +14,7 @@ namespace UploadPhotos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
-            Emotion = new HashSet<Emotion>();
+            Emotions = new HashSet<Emotion>();
         }
 
         public Location(string location)
@@ -22,7 +22,6 @@ namespace UploadPhotos.Models
             this.location = location;
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [StringLength(10)]
@@ -35,6 +34,6 @@ namespace UploadPhotos.Models
         public virtual AspNetUser AspNetUser { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Emotion> Emotion { get; set; }
+        public virtual ICollection<Emotion> Emotions { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace UploadPhotos
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Emotion>("MyOdata");
             builder.EntitySet<Facerectangle>("Facerectangles");
-            builder.EntitySet<Scores>("Scores");
+            builder.EntitySet<Score>("Scores");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
                   
         }

@@ -38,7 +38,7 @@ namespace UploadPhotos.Controllers
 
         //}
         //GET: api/FetchData
-        public IQueryable<Scores> GetEmotion()
+        public IQueryable<Score> GetEmotion()
         {
             db.Configuration.ProxyCreationEnabled = false;
             var scores = db.Scores;

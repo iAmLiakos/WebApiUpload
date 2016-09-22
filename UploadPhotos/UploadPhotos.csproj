@@ -272,13 +272,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609161103404_Initial.cs" />
-    <Compile Include="Migrations\201609161103404_Initial.Designer.cs">
-      <DependentUpon>201609161103404_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609191013491_new.cs" />
-    <Compile Include="Migrations\201609191013491_new.Designer.cs">
-      <DependentUpon>201609191013491_new.cs</DependentUpon>
+    <Compile Include="Migrations\201609221002035_Initial.cs" />
+    <Compile Include="Migrations\201609221002035_Initial.Designer.cs">
+      <DependentUpon>201609221002035_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -406,11 +402,8 @@
     <TypeScriptCompile Include="Scripts\typings\powerbi.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609161103404_Initial.resx">
-      <DependentUpon>201609161103404_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609191013491_new.resx">
-      <DependentUpon>201609191013491_new.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609221002035_Initial.resx">
+      <DependentUpon>201609221002035_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

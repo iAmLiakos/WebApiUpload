@@ -16,27 +16,34 @@ namespace UploadPhotos.Models
         public virtual DbSet<Emotion> Emotions { get; set; }
         public virtual DbSet<Facerectangle> Facerectangles { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Scores> Scores { get; set; }
+        public virtual DbSet<Score> Scores { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AspNetUser>()
-                .HasMany(e => e.Location)
+                .HasMany(e => e.Locations)
                 .WithRequired(e => e.AspNetUser)
+                .HasForeignKey(e => e.AspNetUsersId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Facerectangle>()
-                .HasMany(e => e.Emotion)
-                .WithOptional(e => e.Facerectangle)
-                .HasForeignKey(e => e.FaceId);
+                .HasMany(e => e.Emotions)
+                .WithRequired(e => e.Facerectangle)
+                .HasForeignKey(e => e.FaceId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Location>()
                 .Property(e => e.Name)
                 .IsFixedLength();
 
             modelBuilder.Entity<Location>()
-                .HasMany(e => e.Emotion)
+                .HasMany(e => e.Emotions)
                 .WithRequired(e => e.Location)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Score>()
+                .HasMany(e => e.Emotions)
+                .WithRequired(e => e.Scores)
                 .WillCascadeOnDelete(false);
         }
     }

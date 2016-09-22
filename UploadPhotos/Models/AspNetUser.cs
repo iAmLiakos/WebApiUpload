@@ -12,12 +12,7 @@ namespace UploadPhotos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetUser()
         {
-            Location = new HashSet<Location>();
-        }
-
-        public AspNetUser(string user)
-        {
-            this.Email = user;
+            Locations = new HashSet<Location>();
         }
 
         public string Id { get; set; }
@@ -48,7 +43,7 @@ namespace UploadPhotos.Models
         public string UserName { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Location> Location { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
     }
 
 }

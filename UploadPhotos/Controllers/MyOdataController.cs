@@ -62,7 +62,7 @@ namespace UploadPhotos.Controllers
 
         // GET: odata/MyOdata(5)/Score
         [EnableQuery]
-        public SingleResult<Scores> GetScore([FromODataUri] int key)
+        public SingleResult<Score> GetScore([FromODataUri] int key)
         {
             return SingleResult.Create(db.Emotions.Where(m => m.Id == key).Select(m => m.Scores));
         }
