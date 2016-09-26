@@ -85,6 +85,7 @@ namespace UploadApplication.Controllers
             try
             {
                 // Read all contents of multipart message into CustomMultipartFormDataStreamProvider.
+                //Request.Content.LoadIntoBufferAsync().Wait();
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 foreach (MultipartFileData file in provider.FileData)
@@ -118,6 +119,7 @@ namespace UploadApplication.Controllers
                         using (FileStream fs = new FileStream(file.LocalFileName, FileMode.Open))
                         {
                             imageBytes = new BinaryReader(fs).ReadBytes((int)fs.Length);
+                            
                         }
                         request.AddParameter("application/octet-stream", imageBytes, ParameterType.RequestBody);
                                                                       
