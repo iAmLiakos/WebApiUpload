@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 using UploadPhotos.Models;
 
@@ -21,10 +22,12 @@ namespace UploadApplication.Controllers
     
     public class UploadController : ApiController
     {
-        //[AllowAnonymous]
-        [Authorize]
+        
+    //[AllowAnonymous]
+    [Authorize]
         public async Task<HttpResponseMessage> Post()
         {
+            
 
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -69,7 +72,9 @@ namespace UploadApplication.Controllers
             {
                 location = headerValues.FirstOrDefault();
             }
+
             Location loc = new Location(location);
+            
             //loc.AspNetUser = userrequested;
             loc.AspNetUsersId = userrequested.Id;
             loc.Name = location;
@@ -98,19 +103,20 @@ namespace UploadApplication.Controllers
                     {
 
                         //files.Add(Path.GetFileName(file.LocalFileName));
-
+                        //getting keys
+                        string ocpkey = WebConfigurationManager.AppSettings["Ocp-Apim-Subscription-Key"];
                         //DO STUFF WITH PHOTOS/EMOTIONS
-
+                        
                         //HTTP REQUEST to the Emotion API                    
                         //Stream filestream = new FileStream(file.LocalFileName, FileMode.Open);
-                                                
+
                         //xtizw to swma tou request
 
                         //Using RestSharp
                         var client = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");                        
                         var request = new RestRequest(Method.POST);
                         request.RequestFormat = DataFormat.Json;
-                        request.AddHeader("Ocp-Apim-Subscription-Key", "02514d4f80b743718df7675700e46d95");
+                        request.AddHeader("Ocp-Apim-Subscription-Key", ocpkey);
                         //request.AddParameter("content-type", "application/octet-stream");
                         //request.AddParameter("Host", "api.projectoxford.ai");
                         Byte[] imageBytes;                        
