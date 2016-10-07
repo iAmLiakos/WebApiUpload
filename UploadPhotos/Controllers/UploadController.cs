@@ -14,43 +14,45 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 using UploadPhotos.Models;
-
+using Microsoft.Azure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 
 
 namespace UploadApplication.Controllers
 {
-    
+
     public class UploadController : ApiController
     {
-        
-    //[AllowAnonymous]
-    [Authorize]
+
+        //[AllowAnonymous]
+        [Authorize]
         public async Task<HttpResponseMessage> Post()
         {
-            
+
 
             if (!Request.Content.IsMimeMultipartContent())
             {
                 //if (Request.Content.ReadAsStringAsync().Result.StartsWith("Username:"))
                 //{
-                    //var request = await Request.Content.ReadAsStringAsync();
-                    //ReadAsStringAsync();
-                    //var reque = JsonConvert.SerializeObject(request);
-                    //var jsoncredentials = JsonConvert.SerializeObject(request);
-                    //allagh "\"Username:foo@foo.grLocation:Ioannina\""
+                //var request = await Request.Content.ReadAsStringAsync();
+                //ReadAsStringAsync();
+                //var reque = JsonConvert.SerializeObject(request);
+                //var jsoncredentials = JsonConvert.SerializeObject(request);
+                //allagh "\"Username:foo@foo.grLocation:Ioannina\""
 
-                    //Location newloc = JsonConvert.DeserializeObject<Location>(reque);
+                //Location newloc = JsonConvert.DeserializeObject<Location>(reque);
 
-                    //add username and location names to put into dbcontext
-                    //var username = jsoncredentials.
+                //add username and location names to put into dbcontext
+                //var username = jsoncredentials.
 
-                    //using (var context = new MyPhotoModel())
-                    //{
+                //using (var context = new MyPhotoModel())
+                //{
 
-                    //    context.Locations.Add(newloc);
-                    //    context.SaveChanges();
+                //    context.Locations.Add(newloc);
+                //    context.SaveChanges();
 
-                    //}
+                //}
                 //}
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
@@ -65,7 +67,7 @@ namespace UploadApplication.Controllers
             //IEnumerable<string> location = Request.Headers.GetValues("Location");
             //var locationstring = location.ToString();
 
-            IEnumerable < string > headerValues;
+            IEnumerable<string> headerValues;
             var location = string.Empty;
             var keyFound = Request.Headers.TryGetValues("Location", out headerValues);
             if (keyFound)
@@ -74,12 +76,25 @@ namespace UploadApplication.Controllers
             }
 
             Location loc = new Location(location);
-            
+
             //loc.AspNetUser = userrequested;
             loc.AspNetUsersId = userrequested.Id;
             loc.Name = location;
-            // load data to save           
+            // load data to save
+            //azure blob
+            //CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+            //            CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            //CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            //CloudBlobContainer container = blobClient.GetContainerReference("data");
+            //container.CreateIfNotExists();
+            //container.SetPermissions(
+            //            new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+            //CloudBlockBlob blockBlob = container.GetBlockBlobReference("myblob");
+            //string containerString = container.ToString();
+            
             string fileSaveLocation = HttpContext.Current.Server.MapPath("~/App_Data");
+            Directory.CreateDirectory(fileSaveLocation);
+            //string fileSaveLocationAzure = Microsoft.SqlServer.Server.MapPath("~/App_Data");
             CustomMultipartFormDataStreamProvider provider = new CustomMultipartFormDataStreamProvider(fileSaveLocation);
 
             List<string> files = new List<string>();
@@ -93,9 +108,14 @@ namespace UploadApplication.Controllers
                 //Request.Content.LoadIntoBufferAsync().Wait();
                 await Request.Content.ReadAsMultipartAsync(provider);
 
+                
+
                 foreach (MultipartFileData file in provider.FileData)
                 {
-
+                    //using (var fileStream = File.OpenRead(@"path\myPhoto"))
+                    //{
+                    //    blockBlob.UploadFromStream(fileStream);
+                    //}
                     var ext = file.LocalFileName.Substring(file.LocalFileName.LastIndexOf('.'));
                     var extension = ext.ToLower();
 
@@ -106,36 +126,38 @@ namespace UploadApplication.Controllers
                         //getting keys
                         string ocpkey = WebConfigurationManager.AppSettings["Ocp-Apim-Subscription-Key"];
                         //DO STUFF WITH PHOTOS/EMOTIONS
-                        
+
                         //HTTP REQUEST to the Emotion API                    
                         //Stream filestream = new FileStream(file.LocalFileName, FileMode.Open);
 
                         //xtizw to swma tou request
 
                         //Using RestSharp
-                        var client = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");                        
+                        var client = new RestClient("https://api.projectoxford.ai/emotion/v1.0/recognize");
                         var request = new RestRequest(Method.POST);
                         request.RequestFormat = DataFormat.Json;
                         request.AddHeader("Ocp-Apim-Subscription-Key", ocpkey);
                         //request.AddParameter("content-type", "application/octet-stream");
                         //request.AddParameter("Host", "api.projectoxford.ai");
-                        Byte[] imageBytes;                        
+                        Byte[] imageBytes;
                         //Debugging
                         //File.Open(@"C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/smile.jpg", FileMode.Open)
+                        
+
                         using (FileStream fs = new FileStream(file.LocalFileName, FileMode.Open))
                         {
                             imageBytes = new BinaryReader(fs).ReadBytes((int)fs.Length);
-                            
+
                         }
                         request.AddParameter("application/octet-stream", imageBytes, ParameterType.RequestBody);
-                                                                      
+
                         // execute the request prosthiki
                         IRestResponse response = client.Execute(request);
                         var responseContent = response.Content; // raw content as string
                         var responseStr = responseContent.Replace(@"\", string.Empty).Trim(new char[] { '\"' });
                         //Deserialize
                         var emotionObject = JsonConvert.DeserializeObject<List<Emotion>>(responseStr);
-                        
+
                         //var scoresObject = emotionObject[0].scores;
                         //Debug.WriteLine(emotionObject[0].scores);
 
@@ -148,7 +170,7 @@ namespace UploadApplication.Controllers
                                 //eobject.LocationId = loc.Id;
                                 //eobject.FaceId = eobject.Facerectangle.Id;
                                 //eobject.ScoreId = eobject.Scores.Id;
-                                eobject.Location = loc;  
+                                eobject.Location = loc;
                                 //db.Locations.Add(loc);
                                 db.Emotions.Add(eobject);
                                 //db.AspNetUsers.Add(userrequested);
@@ -165,9 +187,9 @@ namespace UploadApplication.Controllers
 
 
                         //Apothikeush tou apotelesmatos se txt arxeio
-                        TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
-                        write.WriteLine(responseContent);                        
-                        write.Close();
+                        //TextWriter write = new StreamWriter("C:/Users/Ilias/Documents/GitHub/WebApiUpload/UploadPhotos/App_Data/result.txt");
+                        //write.WriteLine(responseContent);
+                        //write.Close();
 
                         /*
                         //playing with json - good output

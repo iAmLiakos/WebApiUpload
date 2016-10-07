@@ -7,20 +7,17 @@ using Microsoft.PowerBI.Api.V1;
 using Microsoft.PowerBI.Security;
 using Microsoft.Rest;
 using UploadPhotos.Models;
-using System.Collections.Generic;
 
 namespace UploadPhotos.Controllers
 {
-    [AllowAnonymous]
-    [Authorize]
-    public class HomeController : Controller
+    public class DashboardController : Controller
     {
         private readonly string workspaceCollection;
         private readonly string workspaceId;
         private readonly string accessKey;
         private readonly string apiUrl;
 
-        public HomeController()
+        public DashboardController()
         {
             this.workspaceCollection = ConfigurationManager.AppSettings["powerbi:WorkspaceCollection"];
             this.workspaceId = ConfigurationManager.AppSettings["powerbi:WorkspaceId"];
@@ -38,16 +35,7 @@ namespace UploadPhotos.Controllers
         {
             using (var client = this.CreatePowerBIClient())
             {
-                //string myUserID = User.Identity.Name.ToString();
-                //IEnumerable<string> myRole = new List<string>() { "Customer", "Developer" };
-                //var embedToken = (myUserID == "") ? PowerBIToken.CreateReportEmbedToken(workspaceCollection, workspaceId, ReportID) : PowerBIToken.CreateReportEmbedToken(workspaceCollection, workspaceId, ReportID, myUserID, myRole);
-                //string myTok = embedToken.Generate(accessKey);
-
-                //accessTokenText.Value = myTok;  //input on the report page.
-
-                //embedUrlText.Value = "https://embedded.powerbi.com/appTokenReportEmbed?reportId=" + ReportID; //input on the report page.
                 var reportsResponse = client.Reports.GetReports(this.workspaceCollection, this.workspaceId);
-                //var embedToken = PowerBIToken.CreateReportEmbedToken(this.workspaceCollection, this.workspaceId, report.Id, myUserID, new String[] { "Users" });
 
                 var viewModel = new ReportsViewModel
                 {
@@ -62,12 +50,9 @@ namespace UploadPhotos.Controllers
         {
             using (var client = this.CreatePowerBIClient())
             {
-                string myUserID = User.Identity.Name.ToString();
                 var reportsResponse = await client.Reports.GetReportsAsync(this.workspaceCollection, this.workspaceId);
                 var report = reportsResponse.Value.FirstOrDefault(r => r.Id == reportId);
-                //var embedToken = PowerBIToken.CreateReportEmbedToken(this.workspaceCollection, this.workspaceId, report.Id);
-                //Emfanizoume me vash to userid dhladh xrhsimopoiw to Role pou eftiaksa to PowerBI desktop
-                var embedToken = PowerBIToken.CreateReportEmbedToken(this.workspaceCollection, this.workspaceId, report.Id, myUserID, new String[] {"Users"});
+                var embedToken = PowerBIToken.CreateReportEmbedToken(this.workspaceCollection, this.workspaceId, report.Id);
 
                 var viewModel = new ReportViewModel
                 {
@@ -90,7 +75,4 @@ namespace UploadPhotos.Controllers
             return client;
         }
     }
-
 }
-
-//power bi
